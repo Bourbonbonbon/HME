@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HME管理平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --gradient-accent: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+            --gradient-success: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            transition: background-image 0.5s ease;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 20px 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 3px solid white;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(67, 97, 238, 0.4);
+        }
+        
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            text-align: center;
+            border: 2px dashed rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .logo-placeholder:hover {
+            background: linear-gradient(135deg, #3a56d4 0%, #2d0b8a 100%);
+        }
+        
+        .site-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary-color);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .site-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .tabs {
+            display: flex;
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .tab {
+            flex: 1;
+            min-width: 140px;
+            padding: 18px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--dark-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+        
+        .tab:hover::before {
+            opacity: 0.05;
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .tab-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            min-height: 400px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .image-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            background-color: white;
+            border: 1px solid var(--border-color);
+        }
+        
+        .image-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .image-item:hover img {
+            transform: scale(1.03);
+        }
+        
+        .image-info {
+            padding: 20px;
+        }
+        
+        .image-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-size: 18px;
+        }
+        
+        .image-date {
+            font-size: 14px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .image-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3a56d4 0%, #2d0b8a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-danger {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #e01e6f 0%, #9c1485 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #3db5d8 0%, #3a7de8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 201, 240, 0.3);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f8961e 0%, #f3722c 100%);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e08617 0%, #e1651f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(248, 150, 30, 0.3);
+        }
+        
+        .upload-section {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(58, 12, 163, 0.05) 100%);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px dashed var(--primary-color);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 550px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6c757d;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            background-color: #f8f9fa;
+            color: var(--accent-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .form-hint {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 8px;
+        }
+        
+        .password-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: var(--radius-sm);
+            display: none;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .image-preview.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .full-image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .full-image-modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        .full-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close-full-image {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 45px;
+            cursor: pointer;
+            z-index: 1101;
+            transition: var(--transition);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .close-full-image:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .integral-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .integral-section {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .settings-item {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .settings-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+        
+        .settings-item h3 {
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .settings-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .settings-image:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: #dee2e6;
+            opacity: 0.7;
+        }
+        
+        .empty-state h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .file-list {
+            margin-top: 10px;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        .file-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+        
+        .password-hint {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #6c757d;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: var(--radius);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge-primary {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .badge-success {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: #4cc9f0;
+        }
+        
+        .badge-warning {
+            background-color: rgba(248, 150, 30, 0.1);
+            color: #f8961e;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            background-color: var(--dark-color);
+            color: white;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-success {
+            background: var(--gradient-success);
+        }
+        
+        .toast-error {
+            background: var(--gradient-accent);
+        }
+        
+        .toast-warning {
+            background: linear-gradient(135deg, #f8961e 0%, #f3722c 100%);
+        }
+        
+        @media (max-width: 992px) {
+            .images-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                min-width: 100%;
+                text-align: left;
+                padding-left: 25px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+            }
+            
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .image-actions {
+                flex-direction: column;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .images-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div id="logo-display" class="logo-placeholder">
+                    <i class="fas fa-image"></i>
+                    <div>上传LOGO</div>
+                </div>
+                <div>
+                    <div class="site-title">HME管理平台</div>
+                    <div class="site-subtitle">高效、安全、便捷的内容管理系统</div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <button id="export-data" class="btn btn-success">
+                    <i class="fas fa-download"></i> 导出数据
+                </button>
+                <button id="import-data" class="btn btn-secondary">
+                    <i class="fas fa-upload"></i> 导入数据
+                </button>
+            </div>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>公告数量</h3>
+                <div class="stat-value" id="announcement-count">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>通知数量</h3>
+                <div class="stat-value" id="notice-count">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>活动数量</h3>
+                <div class="stat-value" id="activity-count">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>积分项目</h3>
+                <div class="stat-value" id="integral-count">0</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="announcement">
+                <i class="fas fa-bullhorn tab-icon"></i> 公告
+                <span class="badge badge-primary" id="announcement-badge">0</span>
+            </div>
+            <div class="tab" data-tab="notice">
+                <i class="fas fa-bell tab-icon"></i> 通知
+                <span class="badge badge-success" id="notice-badge">0</span>
+            </div>
+            <div class="tab" data-tab="activity">
+                <i class="fas fa-calendar-alt tab-icon"></i> 活动介绍
+                <span class="badge badge-warning" id="activity-badge">0</span>
+            </div>
+            <div class="tab" data-tab="integral">
+                <i class="fas fa-star tab-icon"></i> 积分制
+            </div>
+            <div class="tab" data-tab="settings">
+                <i class="fas fa-cog tab-icon"></i> 设置
+            </div>
+            <div class="tab" data-tab="poke">
+                <i class="fas fa-hand-point-up tab-icon"></i> 戳戳我
+            </div>
+        </div>
+        
+        <!-- 公告标签页 -->
+        <div id="announcement" class="tab-content active">
+            <h2 class="section-title">
+                <span><i class="fas fa-bullhorn"></i> 公告管理</span>
+                <div class="section-actions">
+                    <button id="add-announcement" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 添加公告
+                    </button>
+                    <button id="clear-announcement" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空公告
+                    </button>
+                </div>
+            </h2>
+            
+            <div id="announcement-container" class="images-container">
+                <!-- 公告图片将通过JavaScript动态添加 -->
+                <div class="empty-state">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>暂无公告</h3>
+                    <p>点击"添加公告"按钮上传第一条公告内容</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 通知标签页 -->
+        <div id="notice" class="tab-content">
+            <h2 class="section-title">
+                <span><i class="fas fa-bell"></i> 通知管理</span>
+                <div class="section-actions">
+                    <button id="add-notice" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 添加通知
+                    </button>
+                    <button id="clear-notice" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空通知
+                    </button>
+                </div>
+            </h2>
+            
+            <div id="notice-container" class="images-container">
+                <!-- 通知图片将通过JavaScript动态添加 -->
+                <div class="empty-state">
+                    <i class="fas fa-bell"></i>
+                    <h3>暂无通知</h3>
+                    <p>点击"添加通知"按钮上传第一条通知内容</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 活动介绍标签页 -->
+        <div id="activity" class="tab-content">
+            <h2 class="section-title">
+                <span><i class="fas fa-calendar-alt"></i> 活动管理</span>
+                <div class="section-actions">
+                    <button id="add-activity" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 添加活动
+                    </button>
+                    <button id="clear-activity" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空活动
+                    </button>
+                </div>
+            </h2>
+            
+            <div id="activity-container" class="images-container">
+                <!-- 活动图片将通过JavaScript动态添加 -->
+                <div class="empty-state">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>暂无活动</h3>
+                    <p>点击"添加活动"按钮上传第一条活动内容</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 积分制标签页 -->
+        <div id="integral" class="tab-content">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> 积分制管理
+            </h2>
+            
+            <div class="integral-sections">
+                <!-- 积分制任务 -->
+                <div class="integral-section">
+                    <h3><i class="fas fa-tasks"></i> 积分制任务</h3>
+                    <div id="integral-task-container" class="images-container">
+                        <div class="empty-state">
+                            <i class="fas fa-tasks"></i>
+                            <h3>暂无积分制任务</h3>
+                            <p>点击"添加积分制任务"按钮上传第一条任务</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary add-integral-task">
+                        <i class="fas fa-plus"></i> 添加积分制任务
+                    </button>
+                </div>
+                
+                <!-- 积分制计划 -->
+                <div class="integral-section">
+                    <h3><i class="fas fa-calendar-check"></i> 积分制计划</h3>
+                    <div id="integral-plan-container" class="images-container">
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3>暂无积分制计划</h3>
+                            <p>点击"添加积分制计划"按钮上传第一条计划</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary add-integral-plan">
+                        <i class="fas fa-plus"></i> 添加积分制计划
+                    </button>
+                </div>
+                
+                <!-- 积分制游戏 -->
+                <div class="integral-section">
+                    <h3><i class="fas fa-gamepad"></i> 积分制游戏</h3>
+                    <div id="integral-game-container" class="images-container">
+                        <div class="empty-state">
+                            <i class="fas fa-gamepad"></i>
+                            <h3>暂无积分制游戏</h3>
+                            <p>点击"添加积分制游戏"按钮上传第一条游戏</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary add-integral-game">
+                        <i class="fas fa-plus"></i> 添加积分制游戏
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置标签页 -->
+        <div id="settings" class="tab-content">
+            <h2 class="section-title">
+                <i class="fas fa-cog"></i> 系统设置
+            </h2>
+            
+            <div class="password-container">
+                <p>请输入管理密码以修改设置：</p>
+                <div class="form-group">
+                    <input type="password" id="settings-password" class="form-control" placeholder="请输入管理密码">
+                    <div class="password-hint">
+                        <i class="fas fa-key"></i> 默认密码为740302
+                    </div>
+                </div>
+                <button id="settings-unlock" class="btn btn-primary">
+                    <i class="fas fa-unlock"></i> 验证密码
+                </button>
+            </div>
+            
+            <div id="settings-content" style="display: none;">
+                <div class="settings-grid">
+                    <div class="settings-item">
+                        <h3><i class="fas fa-image"></i> LOGO设置</h3>
+                        <div id="settings-logo-display" class="logo-placeholder" style="width: 100%; height: 180px; font-size: 14px;">
+                            <i class="fas fa-image"></i>
+                            <div>点击上传LOGO<br>(推荐75×75像素)</div>
+                        </div>
+                        <div class="image-actions" style="margin-top: 15px;">
+                            <button id="upload-logo" class="btn btn-primary" style="flex: 1; margin-right: 5px;">
+                                <i class="fas fa-upload"></i> 上传/修改
+                            </button>
+                            <button id="delete-logo" class="btn btn-danger" style="flex: 1; margin-left: 5px;">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                        <p class="form-hint">支持格式: JPG, JPEG, PNG</p>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <h3><i class="fas fa-desktop"></i> 背景设置</h3>
+                        <img id="settings-bg-display" class="settings-image" src="" alt="背景图片" style="display: none;">
+                        <div id="settings-bg-placeholder" class="logo-placeholder" style="width: 100%; height: 180px; font-size: 14px;">
+                            <i class="fas fa-image"></i>
+                            <div>点击上传背景图片</div>
+                        </div>
+                        <div class="image-actions" style="margin-top: 15px;">
+                            <button id="upload-bg" class="btn btn-primary" style="flex: 1; margin-right: 5px;">
+                                <i class="fas fa-upload"></i> 上传/修改
+                            </button>
+                            <button id="delete-bg" class="btn btn-danger" style="flex: 1; margin-left: 5px;">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                        <p class="form-hint">支持格式: JPG, JPEG, PNG</p>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <h3><i class="fas fa-hand-point-up"></i> 戳戳我设置</h3>
+                        <img id="settings-poke-display" class="settings-image" src="" alt="戳戳我图片" style="display: none;">
+                        <div id="settings-poke-placeholder" class="logo-placeholder" style="width: 100%; height: 180px; font-size: 14px;">
+                            <i class="fas fa-hand-point-up"></i>
+                            <div>前往"戳戳我"标签页上传内容</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="upload-section">
+                    <h3><i class="fas fa-database"></i> 数据管理</h3>
+                    <p>导出或导入系统数据（JSON格式）</p>
+                    <div class="quick-actions">
+                        <button id="export-all-data" class="btn btn-success">
+                            <i class="fas fa-download"></i> 导出所有数据
+                        </button>
+                        <button id="import-all-data" class="btn btn-warning">
+                            <i class="fas fa-upload"></i> 导入数据
+                        </button>
+                        <button id="reset-data" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> 重置所有数据
+                        </button>
+                    </div>
+                    <p class="form-hint">注意：重置数据将清除所有内容，操作不可逆！</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 戳戳我标签页 -->
+        <div id="poke" class="tab-content">
+            <h2 class="section-title">
+                <span><i class="fas fa-hand-point-up"></i> 戳戳我管理</span>
+                <div class="section-actions">
+                    <button id="add-poke" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 添加内容
+                    </button>
+                    <button id="clear-poke" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空内容
+                    </button>
+                </div>
+            </h2>
+            
+            <div id="poke-container" class="images-container">
+                <!-- 戳戳我图片将通过JavaScript动态添加 -->
+                <div class="empty-state">
+                    <i class="fas fa-hand-point-up"></i>
+                    <h3>暂无内容</h3>
+                    <p>点击"添加内容"按钮上传第一条戳戳我内容</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>HME管理平台</strong> &copy; 2023 | 默认管理密码: <code>740302</code> | 当前版本: v2.0</p>
+            <p class="form-hint">本系统使用浏览器本地存储，请勿清除浏览器缓存以免数据丢失</p>
+        </div>
+    </div>
+    
+    <!-- 通用上传/编辑模态框 -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">
+                    <i class="fas fa-cloud-upload-alt"></i> 上传内容
+                </h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="upload-form">
+                <input type="hidden" id="edit-index" value="-1">
+                <input type="hidden" id="data-type" value="">
+                <input type="hidden" id="integral-type" value="">
+                
+                <div class="form-group">
+                    <label for="image-title"><i class="fas fa-heading"></i> 标题</label>
+                    <input type="text" id="image-title" class="form-control" placeholder="请输入图片标题" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image-upload"><i class="fas fa-image"></i> 图片上传</label>
+                    <input type="file" id="image-upload" class="form-control" accept="image/jpeg, image/jpg, image/png" required>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i> 支持格式: JPG, JPEG, PNG (最多5张图片，每张最大5MB)
+                    </div>
+                    <img id="image-preview" class="image-preview" alt="图片预览">
+                </div>
+                
+                <div id="attachment-container" class="form-group" style="display: none;">
+                    <label for="file-upload"><i class="fas fa-paperclip"></i> 附件上传 (可选)</label>
+                    <input type="file" id="file-upload" class="form-control" accept=".docx, .pdf">
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i> 支持格式: DOCX, PDF (最大10MB)
+                    </div>
+                    <div id="file-list" class="file-list"></div>
+                </div>
+                
+                <div class="password-container">
+                    <div class="form-group">
+                        <label for="modal-password"><i class="fas fa-key"></i> 管理密码</label>
+                        <input type="password" id="modal-password" class="form-control" placeholder="请输入管理密码" required>
+                        <div class="password-hint">
+                            <i class="fas fa-key"></i> 默认密码为740302
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-check"></i> 提交
+                    </button>
+                    <button type="button" class="btn btn-secondary close-modal" style="flex: 1;">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 图片查看模态框 -->
+    <div id="image-viewer" class="full-image-modal">
+        <span class="close-full-image">&times;</span>
+        <img class="full-image" src="" alt="放大图片">
+    </div>
+    
+    <!-- 通知消息容器 -->
+    <div id="toast-container"></div>
+    
+    <script>
+        // 全局变量
+        const DEFAULT_PASSWORD = "740302";
+        let currentTab = "announcement";
+        let currentDataType = "";
+        let currentIntegralType = "";
+        
+        // 数据存储结构
+        let appData = {
+            announcement: [],
+            notice: [],
+            activity: [],
+            integralTask: [],
+            integralPlan: [],
+            integralGame: [],
+            poke: [],
+            settings: {
+                logo: "",
+                background: "",
+                logoDataUrl: "",
+                backgroundDataUrl: ""
+            }
+        };
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从localStorage加载数据
+            loadData();
+            
+            // 初始化标签页切换
+            initTabs();
+            
+            // 初始化事件监听器
+            initEventListeners();
+            
+            // 应用设置
+            applySettings();
+            
+            // 渲染所有数据
+            renderAllData();
+            
+            // 更新统计
+            updateStats();
+        });
+        
+        // 从localStorage加载数据
+        function loadData() {
+            const savedData = localStorage.getItem('hme-data');
+            if (savedData) {
+                try {
+                    appData = JSON.parse(savedData);
+                    showToast('数据加载成功', 'success');
+                } catch (e) {
+                    showToast('数据加载失败，使用默认数据', 'error');
+                    console.error('数据解析错误:', e);
+                }
+            }
+        }
+        
+        // 保存数据到localStorage
+        function saveData() {
+            try {
+                localStorage.setItem('hme-data', JSON.stringify(appData));
+                updateStats();
+                return true;
+            } catch (e) {
+                showToast('数据保存失败，存储空间可能不足', 'error');
+                console.error('保存数据错误:', e);
+                return false;
+            }
+        }
+        
+        // 显示通知消息
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // 显示toast
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // 3秒后移除toast
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 400);
+            }, 3000);
+        }
+        
+        // 更新统计数据
+        function updateStats() {
+            document.getElementById('announcement-count').textContent = appData.announcement.length;
+            document.getElementById('notice-count').textContent = appData.notice.length;
+            document.getElementById('activity-count').textContent = appData.activity.length;
+            document.getElementById('integral-count').textContent = 
+                appData.integralTask.length + appData.integralPlan.length + appData.integralGame.length;
+            
+            document.getElementById('announcement-badge').textContent = appData.announcement.length;
+            document.getElementById('notice-badge').textContent = appData.notice.length;
+            document.getElementById('activity-badge').textContent = appData.activity.length;
+        }
+        
+        // 初始化标签页切换
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 检查是否有保存的当前标签
+            const savedTab = localStorage.getItem('hme-current-tab');
+            if (savedTab) {
+                currentTab = savedTab;
+                
+                // 移除所有活动标签
+                tabs.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // 激活保存的标签
+                const tabElement = document.querySelector(`.tab[data-tab="${currentTab}"]`);
+                if (tabElement) {
+                    tabElement.classList.add('active');
+                    document.getElementById(currentTab).classList.add('active');
+                }
+            }
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 更新当前标签
+                    currentTab = tabId;
+                    localStorage.setItem('hme-current-tab', tabId);
+                    
+                    // 移除所有活动标签
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // 激活当前标签
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        // 初始化事件监听器
+        function initEventListeners() {
+            // 添加公告按钮
+            document.getElementById('add-announcement').addEventListener('click', function() {
+                openUploadModal('announcement', '添加公告');
+            });
+            
+            // 清空公告按钮
+            document.getElementById('clear-announcement').addEventListener('click', function() {
+                if (appData.announcement.length === 0) {
+                    showToast('公告列表已为空', 'info');
+                    return;
+                }
+                
+                if (confirm(`确定要清空所有公告吗？共${appData.announcement.length}条公告将被删除。`)) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.announcement = [];
+                    saveData();
+                    renderAllData();
+                    showToast('公告已清空', 'success');
+                }
+            });
+            
+            // 添加通知按钮
+            document.getElementById('add-notice').addEventListener('click', function() {
+                openUploadModal('notice', '添加通知');
+            });
+            
+            // 清空通知按钮
+            document.getElementById('clear-notice').addEventListener('click', function() {
+                if (appData.notice.length === 0) {
+                    showToast('通知列表已为空', 'info');
+                    return;
+                }
+                
+                if (confirm(`确定要清空所有通知吗？共${appData.notice.length}条通知将被删除。`)) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.notice = [];
+                    saveData();
+                    renderAllData();
+                    showToast('通知已清空', 'success');
+                }
+            });
+            
+            // 添加活动介绍按钮
+            document.getElementById('add-activity').addEventListener('click', function() {
+                openUploadModal('activity', '添加活动介绍');
+            });
+            
+            // 清空活动按钮
+            document.getElementById('clear-activity').addEventListener('click', function() {
+                if (appData.activity.length === 0) {
+                    showToast('活动列表已为空', 'info');
+                    return;
+                }
+                
+                if (confirm(`确定要清空所有活动吗？共${appData.activity.length}个活动将被删除。`)) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.activity = [];
+                    saveData();
+                    renderAllData();
+                    showToast('活动已清空', 'success');
+                }
+            });
+            
+            // 添加戳戳我按钮
+            document.getElementById('add-poke').addEventListener('click', function() {
+                openUploadModal('poke', '添加戳戳我内容');
+            });
+            
+            // 清空戳戳我按钮
+            document.getElementById('clear-poke').addEventListener('click', function() {
+                if (appData.poke.length === 0) {
+                    showToast('戳戳我列表已为空', 'info');
+                    return;
+                }
+                
+                if (confirm(`确定要清空所有戳戳我内容吗？共${appData.poke.length}条内容将被删除。`)) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.poke = [];
+                    saveData();
+                    renderAllData();
+                    showToast('戳戳我内容已清空', 'success');
+                }
+            });
+            
+            // 积分制添加按钮
+            document.querySelector('.add-integral-task').addEventListener('click', function() {
+                openUploadModal('integral', '添加积分制任务', 'task');
+            });
+            
+            document.querySelector('.add-integral-plan').addEventListener('click', function() {
+                openUploadModal('integral', '添加积分制计划', 'plan');
+            });
+            
+            document.querySelector('.add-integral-game').addEventListener('click', function() {
+                openUploadModal('integral', '添加积分制游戏', 'game');
+            });
+            
+            // 设置相关按钮
+            document.getElementById('settings-unlock').addEventListener('click', function() {
+                const password = document.getElementById('settings-password').value;
+                if (password === DEFAULT_PASSWORD) {
+                    document.getElementById('settings-content').style.display = 'block';
+                    showToast('设置已解锁', 'success');
+                } else {
+                    showToast('密码错误！', 'error');
+                }
+            });
+            
+            // 上传LOGO按钮
+            document.getElementById('upload-logo').addEventListener('click', function() {
+                openSettingsUpload('logo', '上传LOGO');
+            });
+            
+            // 删除LOGO按钮
+            document.getElementById('delete-logo').addEventListener('click', function() {
+                if (!appData.settings.logoDataUrl) {
+                    showToast('LOGO不存在', 'info');
+                    return;
+                }
+                
+                if (confirm('确定要删除LOGO吗？')) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.settings.logo = "";
+                    appData.settings.logoDataUrl = "";
+                    saveData();
+                    applySettings();
+                    showToast('LOGO已删除', 'success');
+                }
+            });
+            
+            // 上传背景按钮
+            document.getElementById('upload-bg').addEventListener('click', function() {
+                openSettingsUpload('background', '上传背景');
+            });
+            
+            // 删除背景按钮
+            document.getElementById('delete-bg').addEventListener('click', function() {
+                if (!appData.settings.backgroundDataUrl) {
+                    showToast('背景不存在', 'info');
+                    return;
+                }
+                
+                if (confirm('确定要删除背景吗？')) {
+                    const password = prompt("请输入管理密码:");
+                    if (password !== DEFAULT_PASSWORD) {
+                        showToast('密码错误！', 'error');
+                        return;
+                    }
+                    
+                    appData.settings.background = "";
+                    appData.settings.backgroundDataUrl = "";
+                    saveData();
+                    applySettings();
+                    showToast('背景已删除', 'success');
+                }
+            });
+            
+            // 数据导出按钮
+            document.getElementById('export-data').addEventListener('click', exportData);
+            document.getElementById('export-all-data').addEventListener('click', exportData);
+            
+            // 数据导入按钮
+            document.getElementById('import-data').addEventListener('click', importData);
+            document.getElementById('import-all-data').addEventListener('click', importData);
+            
+            // 重置数据按钮
+            document.getElementById('reset-data').addEventListener('click', resetData);
+            
+            // 图片上传预览
+            document.getElementById('image-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // 检查文件大小（5MB限制）
+                    if (file.size > 5 * 1024 * 1024) {
+                        showToast('图片大小不能超过5MB', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.getElementById('image-preview');
+                        img.src = e.target.result;
+                        img.classList.add('active');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 附件上传
+            document.getElementById('file-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // 检查文件大小（10MB限制）
+                    if (file.size > 10 * 1024 * 1024) {
+                        showToast('附件大小不能超过10MB', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const fileList = document.getElementById('file-list');
+                    fileList.innerHTML = `
+                        <div class="file-item">
+                            <span class="file-name">${file.name}</span>
+                            <span>${(file.size / 1024).toFixed(2)} KB</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            // 关闭模态框
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.getElementById('upload-modal').classList.remove('active');
+                    resetForm();
+                });
+            });
+            
+            // 关闭图片查看器
+            document.querySelector('.close-full-image').addEventListener('click', function() {
+                document.getElementById('image-viewer').classList.remove('active');
+            });
+            
+            // 点击模态框背景关闭
+            document.getElementById('upload-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    resetForm();
+                }
+            });
+            
+            document.getElementById('image-viewer').addEventListener('click', function(e) {
+                if (e.target === this || e.target.classList.contains('close-full-image')) {
+                    this.classList.remove('active');
+                }
+            });
+            
+            // 表单提交
+            document.getElementById('upload-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 验证密码
+                const password = document.getElementById('modal-password').value;
+                if (password !== DEFAULT_PASSWORD) {
+                    showToast('密码错误！', 'error');
+                    return;
+                }
+                
+                // 获取表单数据
+                const title = document.getElementById('image-title').value;
+                const imageInput = document.getElementById('image-upload');
+                const editIndex = parseInt(document.getElementById('edit-index').value);
+                const dataType = document.getElementById('data-type').value;
+                const integralType = document.getElementById('integral-type').value;
+                
+                if (!imageInput.files[0] && editIndex === -1) {
+                    showToast('请选择图片！', 'error');
+                    return;
+                }
+                
+                // 处理图片上传
+                if (imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        processFormSubmission(e.target.result);
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
+                    // 如果没有上传新图片，使用原有图片
+                    processFormSubmission(null);
+                }
+                
+                function processFormSubmission(imageDataUrl) {
+                    const currentDate = new Date();
+                    const dateString = `${currentDate.getFullYear()}年${currentDate.getMonth()+1}月${currentDate.getDate()}日 ${currentDate.getHours()}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    // 处理附件
+                    const fileInput = document.getElementById('file-upload');
+                    let fileDataUrl = null;
+                    let fileName = null;
+                    
+                    if (fileInput.files[0]) {
+                        const fileReader = new FileReader();
+                        fileReader.onload = function(e) {
+                            fileDataUrl = e.target.result;
+                            fileName = fileInput.files[0].name;
+                            saveFormData(imageDataUrl, fileDataUrl, fileName, dateString);
+                        };
+                        fileReader.readAsDataURL(fileInput.files[0]);
+                    } else {
+                        saveFormData(imageDataUrl, null, null, dateString);
+                    }
+                }
+                
+                function saveFormData(imageDataUrl, fileDataUrl, fileName, dateString) {
+                    const newItem = {
+                        id: Date.now(),
+                        title: title,
+                        imageDataUrl: imageDataUrl,
+                        date: dateString,
+                        fileDataUrl: fileDataUrl,
+                        fileName: fileName
+                    };
+                    
+                    // 确定存储位置
+                    let targetArray;
+                    if (dataType === 'integral') {
+                        if (integralType === 'task') targetArray = appData.integralTask;
+                        else if (integralType === 'plan') targetArray = appData.integralPlan;
+                        else if (integralType === 'game') targetArray = appData.integralGame;
+                    } else {
+                        targetArray = appData[dataType];
+                    }
+                    
+                    // 检查图片数量限制
+                    if (targetArray.length >= 5 && editIndex === -1) {
+                        showToast(`最多只能上传5张图片！`, 'error');
+                        return;
+                    }
+                    
+                    // 添加或更新数据
+                    if (editIndex === -1) {
+                        // 添加新项目
+                        targetArray.push(newItem);
+                        showToast('添加成功！', 'success');
+                    } else {
+                        // 更新现有项目
+                        if (imageDataUrl) {
+                            newItem.imageDataUrl = imageDataUrl;
+                        } else {
+                            // 如果没有上传新图片，保留原图片
+                            newItem.imageDataUrl = targetArray[editIndex].imageDataUrl;
+                        }
+                        targetArray[editIndex] = newItem;
+                        showToast('修改成功！', 'success');
+                    }
+                    
+                    // 保存数据
+                    if (saveData()) {
+                        // 重新渲染
+                        renderAllData();
+                        
+                        // 关闭模态框
+                        document.getElementById('upload-modal').classList.remove('active');
+                        resetForm();
+                    }
+                }
+            });
+        }
+        
+        // 打开上传/编辑模态框
+        function openUploadModal(dataType, title, integralType = '') {
+            document.getElementById('modal-title').innerHTML = `<i class="fas fa-cloud-upload-alt"></i> ${title}`;
+            document.getElementById('data-type').value = dataType;
+            document.getElementById('integral-type').value = integralType;
+            document.getElementById('edit-index').value = -1;
+            
+            // 显示或隐藏附件上传
+            if (dataType === 'integral') {
+                document.getElementById('attachment-container').style.display = 'block';
+            } else {
+                document.getElementById('attachment-container').style.display = 'none';
+            }
+            
+            // 重置表单
+            resetForm();
+            
+            // 显示模态框
+            document.getElementById('upload-modal').classList.add('active');
+            
+            // 聚焦到标题输入框
+            setTimeout(() => {
+                document.getElementById('image-title').focus();
+            }, 300);
+        }
+        
+        // 打开编辑模态框
+        function openEditModal(dataType, index, integralType = '') {
+            let item;
+            
+            if (dataType === 'integral') {
+                if (integralType === 'task') item = appData.integralTask[index];
+                else if (integralType === 'plan') item = appData.integralPlan[index];
+                else if (integralType === 'game') item = appData.integralGame[index];
+            } else {
+                item = appData[dataType][index];
+            }
+            
+            document.getElementById('modal-title').innerHTML = `<i class="fas fa-edit"></i> 修改内容`;
+            document.getElementById('data-type').value = dataType;
+            document.getElementById('integral-type').value = integralType;
+            document.getElementById('edit-index').value = index;
+            document.getElementById('image-title').value = item.title;
+            
+            // 显示图片预览
+            const img = document.getElementById('image-preview');
+            img.src = item.imageDataUrl;
+            img.classList.add('active');
+            
+            // 显示附件
+            if (dataType === 'integral' && item.fileDataUrl) {
+                document.getElementById('attachment-container').style.display = 'block';
+                document.getElementById('file-list').innerHTML = `
+                    <div class="file-item">
+                        <span class="file-name">${item.fileName}</span>
+                        <span>已上传</span>
+                    </div>
+                `;
+            } else if (dataType === 'integral') {
+                document.getElementById('attachment-container').style.display = 'block';
+                document.getElementById('file-list').innerHTML = '';
+            } else {
+                document.getElementById('attachment-container').style.display = 'none';
+            }
+            
+            // 显示模态框
+            document.getElementById('upload-modal').classList.add('active');
+            
+            // 聚焦到标题输入框
+            setTimeout(() => {
+                document.getElementById('image-title').focus();
+            }, 300);
+        }
+        
+        // 打开设置上传模态框
+        function openSettingsUpload(type, title) {
+            const password = prompt("请输入管理密码:");
+            if (password !== DEFAULT_PASSWORD) {
+                showToast('密码错误！', 'error');
+                return;
+            }
+            
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/jpeg, image/jpg, image/png';
+            
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // 检查文件大小（5MB限制）
+                    if (file.size > 5 * 1024 * 1024) {
+                        showToast('图片大小不能超过5MB', 'error');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (type === 'logo') {
+                            appData.settings.logo = file.name;
+                            appData.settings.logoDataUrl = e.target.result;
+                        } else if (type === 'background') {
+                            appData.settings.background = file.name;
+                            appData.settings.backgroundDataUrl = e.target.result;
+                        }
+                        
+                        saveData();
+                        applySettings();
+                        showToast(`${title}成功！`, 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            fileInput.click();
+        }
+        
+        // 导出数据
+        function exportData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `hme-data-${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showToast('数据导出成功', 'success');
+        }
+        
+        // 导入数据
+        function importData() {
+            const password = prompt("请输入管理密码:");
+            if (password !== DEFAULT_PASSWORD) {
+                showToast('密码错误！', 'error');
+                return;
+            }
+            
+            if (!confirm('导入数据将覆盖当前所有数据，确定要继续吗？')) {
+                return;
+            }
+            
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importedData = JSON.parse(e.target.result);
+                            
+                            // 验证数据结构
+                            if (!importedData.announcement || !importedData.settings) {
+                                throw new Error('数据格式不正确');
+                            }
+                            
+                            appData = importedData;
+                            saveData();
+                            applySettings();
+                            renderAllData();
+                            showToast('数据导入成功', 'success');
+                        } catch (error) {
+                            console.error('导入数据错误:', error);
+                            showToast('导入失败，数据格式不正确', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            
+            fileInput.click();
+        }
+        
+        // 重置数据
+        function resetData() {
+            const password = prompt("请输入管理密码:");
+            if (password !== DEFAULT_PASSWORD) {
+                showToast('密码错误！', 'error');
+                return;
+            }
+            
+            if (!confirm('确定要重置所有数据吗？此操作不可逆，所有内容将被清除！')) {
+                return;
+            }
+            
+            // 重置为初始数据
+            appData = {
+                announcement: [],
+                notice: [],
+                activity: [],
+                integralTask: [],
+                integralPlan: [],
+                integralGame: [],
+                poke: [],
+                settings: {
+                    logo: "",
+                    background: "",
+                    logoDataUrl: "",
+                    backgroundDataUrl: ""
+                }
+            };
+            
+            saveData();
+            applySettings();
+            renderAllData();
+            showToast('所有数据已重置', 'success');
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('upload-form').reset();
+            document.getElementById('image-preview').classList.remove('active');
+            document.getElementById('image-preview').src = '';
+            document.getElementById('file-list').innerHTML = '';
+            document.getElementById('edit-index').value = -1;
+        }
+        
+        // 渲染所有数据
+        function renderAllData() {
+            renderData('announcement', 'announcement-container');
+            renderData('notice', 'notice-container');
+            renderData('activity', 'activity-container');
+            renderData('poke', 'poke-container');
+            renderIntegralData();
+            renderSettings();
+        }
+        
+        // 渲染数据到容器
+        function renderData(dataType, containerId) {
+            const container = document.getElementById(containerId);
+            const dataArray = appData[dataType];
+            
+            if (dataArray.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-${getIconByType(dataType)}"></i>
+                        <h3>暂无${getTitleByType(dataType)}</h3>
+                        <p>点击"添加${getTitleByType(dataType)}"按钮上传第一条内容</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            dataArray.forEach((item, index) => {
+                html += `
+                    <div class="image-item" data-id="${item.id}">
+                        <img src="${item.imageDataUrl}" alt="${item.title}" onclick="viewImage('${item.imageDataUrl}')">
+                        <div class="image-info">
+                            <div class="image-title">${item.title}</div>
+                            <div class="image-date">
+                                <i class="far fa-clock"></i> ${item.date}
+                            </div>
+                            <div class="image-actions">
+                                <button class="btn btn-secondary" onclick="editItem('${dataType}', ${index})">
+                                    <i class="fas fa-edit"></i> 修改
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteItem('${dataType}', ${index})">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // 渲染积分制数据
+        function renderIntegralData() {
+            renderIntegralSection('integralTask', 'integral-task-container', 'task');
+            renderIntegralSection('integralPlan', 'integral-plan-container', 'plan');
+            renderIntegralSection('integralGame', 'integral-game-container', 'game');
+        }
+        
+        // 渲染积分制部分
+        function renderIntegralSection(dataType, containerId, integralType) {
+            const container = document.getElementById(containerId);
+            const dataArray = appData[dataType];
+            
+            if (dataArray.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-${getIconByType(dataType)}"></i>
+                        <h3>暂无${getTitleByType(dataType)}</h3>
+                        <p>点击"添加${getTitleByType(dataType)}"按钮上传第一条内容</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            dataArray.forEach((item, index) => {
+                html += `
+                    <div class="image-item" data-id="${item.id}">
+                        <img src="${item.imageDataUrl}" alt="${item.title}" onclick="viewImage('${item.imageDataUrl}')">
+                        <div class="image-info">
+                            <div class="image-title">${item.title}</div>
+                            <div class="image-date">
+                                <i class="far fa-clock"></i> ${item.date}
+                            </div>
+                            ${item.fileName ? `<div class="form-hint" style="margin: 5px 0;"><i class="fas fa-paperclip"></i> 附件: ${item.fileName}</div>` : ''}
+                            <div class="image-actions">
+                                <button class="btn btn-secondary" onclick="editItem('integral', ${index}, '${integralType}')">
+                                    <i class="fas fa-edit"></i> 修改
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteItem('integral', ${index}, '${integralType}')">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // 渲染设置
+        function renderSettings() {
+            const logoDisplay = document.getElementById('settings-logo-display');
+            const bgDisplay = document.getElementById('settings-bg-display');
+            const bgPlaceholder = document.getElementById('settings-bg-placeholder');
+            const pokeDisplay = document.getElementById('settings-poke-display');
+            const pokePlaceholder = document.getElementById('settings-poke-placeholder');
+            
+            // 渲染LOGO
+            if (appData.settings.logoDataUrl) {
+                logoDisplay.innerHTML = `<img src="${appData.settings.logoDataUrl}" alt="LOGO" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);">`;
+                logoDisplay.onclick = () => viewImage(appData.settings.logoDataUrl);
+            } else {
+                logoDisplay.innerHTML = '<i class="fas fa-image"></i><div>点击上传LOGO<br>(推荐75×75像素)</div>';
+                logoDisplay.onclick = () => openSettingsUpload('logo', '上传LOGO');
+            }
+            
+            // 渲染背景
+            if (appData.settings.backgroundDataUrl) {
+                bgDisplay.src = appData.settings.backgroundDataUrl;
+                bgDisplay.style.display = 'block';
+                bgPlaceholder.style.display = 'none';
+                bgDisplay.onclick = () => viewImage(appData.settings.backgroundDataUrl);
+            } else {
+                bgDisplay.style.display = 'none';
+                bgPlaceholder.style.display = 'flex';
+                bgPlaceholder.innerHTML = '<i class="fas fa-image"></i><div>点击上传背景图片</div>';
+                bgPlaceholder.onclick = () => openSettingsUpload('background', '上传背景');
+            }
+            
+            // 渲染戳戳我
+            if (appData.poke.length > 0) {
+                const latestPoke = appData.poke[appData.poke.length - 1];
+                pokeDisplay.src = latestPoke.imageDataUrl;
+                pokeDisplay.style.display = 'block';
+                pokePlaceholder.style.display = 'none';
+                pokeDisplay.onclick = () => viewImage(latestPoke.imageDataUrl);
+            } else {
+                pokeDisplay.style.display = 'none';
+                pokePlaceholder.style.display = 'flex';
+                pokePlaceholder.innerHTML = '<i class="fas fa-hand-point-up"></i><div>前往"戳戳我"标签页上传内容</div>';
+            }
+        }
+        
+        // 应用设置
+        function applySettings() {
+            // 应用LOGO
+            const logoDisplay = document.getElementById('logo-display');
+            if (appData.settings.logoDataUrl) {
+                logoDisplay.innerHTML = `<img src="${appData.settings.logoDataUrl}" alt="LOGO" class="logo" onclick="viewImage('${appData.settings.logoDataUrl}')">`;
+            } else {
+                logoDisplay.innerHTML = '<i class="fas fa-image"></i><div>上传LOGO</div>';
+                logoDisplay.onclick = () => {
+                    // 切换到设置标签页
+                    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    
+                    document.querySelector('.tab[data-tab="settings"]').classList.add('active');
+                    document.getElementById('settings').classList.add('active');
+                    currentTab = 'settings';
+                    localStorage.setItem('hme-current-tab', 'settings');
+                    
+                    // 显示设置内容
+                    document.getElementById('settings-content').style.display = 'block';
+                };
+            }
+            
+            // 应用背景
+            if (appData.settings.backgroundDataUrl) {
+                document.body.style.backgroundImage = `url('${appData.settings.backgroundDataUrl}')`;
+            } else {
+                document.body.style.backgroundImage = '';
+            }
+        }
+        
+        // 查看图片
+        function viewImage(imageSrc) {
+            document.getElementById('image-viewer').querySelector('.full-image').src = imageSrc;
+            document.getElementById('image-viewer').classList.add('active');
+        }
+        
+        // 编辑项目
+        function editItem(dataType, index, integralType = '') {
+            openEditModal(dataType, index, integralType);
+        }
+        
+        // 删除项目
+        function deleteItem(dataType, index, integralType = '') {
+            if (!confirm('确定要删除此项吗？')) return;
+            
+            const password = prompt("请输入管理密码:");
+            if (password !== DEFAULT_PASSWORD) {
+                showToast('密码错误！', 'error');
+                return;
+            }
+            
+            if (dataType === 'integral') {
+                if (integralType === 'task') appData.integralTask.splice(index, 1);
+                else if (integralType === 'plan') appData.integralPlan.splice(index, 1);
+                else if (integralType === 'game') appData.integralGame.splice(index, 1);
+            } else {
+                appData[dataType].splice(index, 1);
+            }
+            
+            saveData();
+            renderAllData();
+            showToast('删除成功！', 'success');
+        }
+        
+        // 根据类型获取图标
+        function getIconByType(type) {
+            const icons = {
+                'announcement': 'bullhorn',
+                'notice': 'bell',
+                'activity': 'calendar-alt',
+                'integralTask': 'tasks',
+                'integralPlan': 'calendar-check',
+                'integralGame': 'gamepad',
+                'poke': 'hand-point-up'
+            };
+            return icons[type] || 'image';
+        }
+        
+        // 根据类型获取标题
+        function getTitleByType(type) {
+            const titles = {
+                'announcement': '公告',
+                'notice': '通知',
+                'activity': '活动介绍',
+                'integralTask': '积分制任务',
+                'integralPlan': '积分制计划',
+                'integralGame': '积分制游戏',
+                'poke': '戳戳我内容'
+            };
+            return titles[type] || '内容';
+        }
+    </script>
+</body>
+</html>
