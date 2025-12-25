@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HME管理平台</title>
+    <title>HME</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -529,7 +529,7 @@
         <header>
             <div class="logo-container">
                 <div id="logo-display" class="logo-placeholder">点击上传LOGO</div>
-                <div class="site-title">HME管理平台</div>
+                <div class="site-title">HME</div>
             </div>
         </header>
         
@@ -649,24 +649,16 @@
         </div>
         
         <!-- 设置标签页 -->
-        <div id="settings" class="tab-content">
-            <h2 class="section-title">设置</h2>
-            
-            <div class="password-container">
-                <p>请输入管理密码以修改设置：</p>
-                <div class="form-group">
-                    <input type="password" id="settings-password" class="form-control" placeholder="请输入管理密码">
-                    <div class="password-hint">默认密码为740302</div>
-                </div>
-                <button id="settings-unlock" class="btn btn-primary">验证密码</button>
-                <div id="settings-password-error" class="password-error">密码错误，请重试</div>
-                
-                <div class="current-password-display">
-                    <strong>当前密码提示：</strong> 密码为6位数字
-                </div>
-            </div>
-            
-            <div id="settings-content" style="display: none;">
+       <div class="password-container">
+           <p>请输入管理密码以修改设置：</p>
+           <div class="form-group">
+               <input type="password" id="settings-password" class="form-control" placeholder="请输入管理密码">
+           </div>
+           <button id="settings-unlock" class="btn btn-primary">验证密码</button>
+           <div id="settings-password-error" class="password-error">密码错误，请重试</div>
+       </div> 
+        
+        <div id="settings-content" style="display: none;">
                 <div class="settings-grid">
                     <div class="settings-item">
                         <h3>LOGO设置</h3>
@@ -718,7 +710,7 @@
         </div>
         
         <div class="footer">
-            <p>HME管理平台 &copy; 2023 | 管理功能需密码验证</p>
+            <p>HME &copy; 2023 | 管理功能需密码验证</p>
         </div>
     </div>
     
