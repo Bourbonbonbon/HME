@@ -1970,12 +1970,23 @@ function resetWildletterRecordForm() {
         
         // 处理野信登记上传
 function handleWildletterRecordUpload() {
+    console.log('开始处理野信登记上传...');
+    
     const recordId = document.getElementById('wildletter-id').value;
-    const deliveryDate = document.getElementById('wildletter-delivery-date').value; // 自动生成的投递日期
-    const registerDateInput = document.getElementById('wildletter-register-date').value.trim(); // 用户输入的登记日期
+    const deliveryDate = document.getElementById('wildletter-delivery-date').value;
+    const registerDateInput = document.getElementById('wildletter-register-date').value.trim();
     const note = document.getElementById('wildletter-note').value.trim();
     const imageFiles = document.getElementById('wildletter-record-images').files;
     const attachmentFile = document.getElementById('wildletter-record-attachment').files[0];
+    
+    console.log('表单数据:', {
+        recordId,
+        deliveryDate,
+        registerDateInput,
+        note,
+        imageFilesCount: imageFiles.length,
+        hasAttachment: !!attachmentFile
+    });
     
     if (imageFiles.length === 0) {
         alert('请至少选择一张图片！');
@@ -1987,59 +1998,78 @@ function handleWildletterRecordUpload() {
         return;
     }
     
-    // 处理登记日期：如果用户输入了，使用用户输入的；否则留空
+    // 处理登记日期
     let registerDate = '';
     if (registerDateInput) {
-        // 验证用户输入的格式（简单验证）
+        console.log('用户输入的登记日期:', registerDateInput);
         const datePattern = /\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{2}/;
         if (!datePattern.test(registerDateInput)) {
             alert('登记日期格式不正确！请使用"YYYY年MM月DD日 HH:MM"格式，例如：2023年12月15日 14:30');
             return;
         }
         registerDate = registerDateInput;
+    } else {
+        console.log('用户未输入登记日期，将留空');
     }
-    // 如果用户没有输入登记日期，registerDate保持为空字符串
+    
+    console.log('开始处理图片上传...');
     
     // 处理图片
     const imagePromises = [];
     for (let i = 0; i < imageFiles.length; i++) {
+        console.log(`图片 ${i+1}:`, imageFiles[i].name, imageFiles[i].size, imageFiles[i].type);
         imagePromises.push(readFileAsDataURL(imageFiles[i]));
     }
     
-    Promise.all(imagePromises).then(imageDataUrls => {
-        // 处理附件
-        let attachmentDataUrl = null;
-        let attachmentName = null;
-        
-        if (attachmentFile) {
-            return readFileAsDataURL(attachmentFile).then(attachmentData => {
-                attachmentDataUrl = attachmentData;
-                attachmentName = attachmentFile.name;
+    Promise.all(imagePromises)
+        .then(imageDataUrls => {
+            console.log('图片上传成功，数量:', imageDataUrls.length);
+            
+            // 处理附件
+            let attachmentDataUrl = null;
+            let attachmentName = null;
+            
+            if (attachmentFile) {
+                console.log('开始处理附件:', attachmentFile.name);
+                return readFileAsDataURL(attachmentFile).then(attachmentData => {
+                    attachmentDataUrl = attachmentData;
+                    attachmentName = attachmentFile.name;
+                    console.log('附件上传成功');
+                    return { imageDataUrls, attachmentDataUrl, attachmentName };
+                });
+            } else {
+                console.log('无附件');
                 return { imageDataUrls, attachmentDataUrl, attachmentName };
-            });
-        } else {
-            return { imageDataUrls, attachmentDataUrl, attachmentName };
-        }
-    }).then(({ imageDataUrls, attachmentDataUrl, attachmentName }) => {
-        const newRecord = {
-            id: recordId,
-            imageDataUrls: imageDataUrls,
-            note: note,
-            deliveryDate: deliveryDate, // 自动生成的投递日期
-            registerDate: registerDate, // 登记日期（用户输入或留空）
-            attachmentDataUrl: attachmentDataUrl,
-            attachmentName: attachmentName
-        };
-        
-        appData.wildletterRecords.push(newRecord);
-        saveData();
-        renderWildletterData();
-        document.getElementById('wildletter-record-modal').classList.remove('active');
-        alert('野信登记成功！');
-    }).catch(error => {
-        console.error('登记错误:', error);
-        alert('登记失败，请重试！');
-    });
+            }
+        })
+        .then(({ imageDataUrls, attachmentDataUrl, attachmentName }) => {
+            console.log('创建登记记录...');
+            
+            const newRecord = {
+                id: recordId,
+                imageDataUrls: imageDataUrls,
+                note: note,
+                deliveryDate: deliveryDate,
+                registerDate: registerDate,
+                attachmentDataUrl: attachmentDataUrl,
+                attachmentName: attachmentName
+            };
+            
+            console.log('新记录:', newRecord);
+            
+            appData.wildletterRecords.push(newRecord);
+            saveData();
+            renderWildletterData();
+            document.getElementById('wildletter-record-modal').classList.remove('active');
+            alert('野信登记成功！');
+            
+            console.log('登记成功完成');
+        })
+        .catch(error => {
+            console.error('登记错误详情:', error);
+            console.error('错误堆栈:', error.stack);
+            alert('登记失败，请重试！错误信息：' + error.message);
+        });
 }
         
         // 文件读取辅助函数
