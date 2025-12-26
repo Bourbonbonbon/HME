@@ -584,6 +584,80 @@
             border-bottom: 2px solid var(--primary-color);
         }
         
+        /* 搜索框样式 */
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        
+        .search-box button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .search-box button:hover {
+            background-color: #2980b9;
+        }
+        
+        .search-results-info {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 多图片预览样式 */
+        .multi-image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .multi-image-item {
+            position: relative;
+            width: 100px;
+            height: 80px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .multi-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .multi-image-remove {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         @media (max-width: 768px) {
             .tabs {
                 flex-direction: column;
@@ -638,6 +712,12 @@
         <div id="announcement" class="tab-content active">
             <h2 class="section-title">公告</h2>
             
+            <div class="search-box">
+                <input type="text" id="announcement-search" placeholder="搜索公告标题...">
+                <button id="announcement-search-btn">搜索</button>
+                <button id="announcement-clear-search" class="btn btn-secondary">清除</button>
+            </div>
+            
             <div id="announcement-container" class="images-container">
                 <div class="empty-state">
                     <i class="fas fa-bullhorn"></i>
@@ -656,6 +736,12 @@
         <div id="notice" class="tab-content">
             <h2 class="section-title">通知</h2>
             
+            <div class="search-box">
+                <input type="text" id="notice-search" placeholder="搜索通知标题...">
+                <button id="notice-search-btn">搜索</button>
+                <button id="notice-clear-search" class="btn btn-secondary">清除</button>
+            </div>
+            
             <div id="notice-container" class="images-container">
                 <div class="empty-state">
                     <i class="fas fa-bell"></i>
@@ -673,6 +759,12 @@
         <!-- 活动介绍标签页 -->
         <div id="activity" class="tab-content">
             <h2 class="section-title">活动介绍</h2>
+            
+            <div class="search-box">
+                <input type="text" id="activity-search" placeholder="搜索活动标题...">
+                <button id="activity-search-btn">搜索</button>
+                <button id="activity-clear-search" class="btn btn-secondary">清除</button>
+            </div>
             
             <div id="activity-container" class="images-container">
                 <div class="empty-state">
@@ -696,6 +788,13 @@
                 <!-- 积分制任务 -->
                 <div class="integral-section">
                     <h3>积分制任务</h3>
+                    
+                    <div class="search-box">
+                        <input type="text" id="integral-task-search" placeholder="搜索任务标题...">
+                        <button id="integral-task-search-btn">搜索</button>
+                        <button id="integral-task-clear-search" class="btn btn-secondary">清除</button>
+                    </div>
+                    
                     <div id="integral-task-container" class="images-container">
                         <div class="empty-state">
                             <i class="fas fa-tasks"></i>
@@ -712,6 +811,13 @@
                 <!-- 积分制计划 -->
                 <div class="integral-section">
                     <h3>积分制计划</h3>
+                    
+                    <div class="search-box">
+                        <input type="text" id="integral-plan-search" placeholder="搜索计划标题...">
+                        <button id="integral-plan-search-btn">搜索</button>
+                        <button id="integral-plan-clear-search" class="btn btn-secondary">清除</button>
+                    </div>
+                    
                     <div id="integral-plan-container" class="images-container">
                         <div class="empty-state">
                             <i class="fas fa-calendar-check"></i>
@@ -728,6 +834,13 @@
                 <!-- 积分制游戏 -->
                 <div class="integral-section">
                     <h3>积分制游戏</h3>
+                    
+                    <div class="search-box">
+                        <input type="text" id="integral-game-search" placeholder="搜索游戏标题...">
+                        <button id="integral-game-search-btn">搜索</button>
+                        <button id="integral-game-clear-search" class="btn btn-secondary">清除</button>
+                    </div>
+                    
                     <div id="integral-game-container" class="images-container">
                         <div class="empty-state">
                             <i class="fas fa-gamepad"></i>
@@ -749,7 +862,15 @@
             
             <!-- 图片展示区域 -->
             <div class="integral-section">
-                <h3>图片展示</h3>
+                <div class="wildletter-content-header">
+                    <h3>图片展示</h3>
+                    <div class="search-box">
+                        <input type="text" id="wildletter-image-search" placeholder="搜索图片日期...">
+                        <button id="wildletter-image-search-btn">搜索</button>
+                        <button id="wildletter-image-clear-search" class="btn btn-secondary">清除</button>
+                    </div>
+                </div>
+                
                 <div id="wildletter-image-container" class="images-container">
                     <div class="empty-state">
                         <i class="fas fa-images"></i>
@@ -767,7 +888,17 @@
             
             <!-- 登记记录区域 -->
             <div class="wildletter-form-section">
-                <h3>登记记录</h3>
+                <div class="wildletter-content-header">
+                    <h3>登记记录</h3>
+                    <div class="search-box">
+                        <input type="text" id="wildletter-record-search" placeholder="搜索野信编号、备注...">
+                        <button id="wildletter-record-search-btn">搜索</button>
+                        <button id="wildletter-record-clear-search" class="btn btn-secondary">清除</button>
+                    </div>
+                </div>
+                
+                <div id="search-results-info" class="search-results-info"></div>
+                
                 <div class="wildletter-table-container">
                     <table class="wildletter-table">
                         <thead>
@@ -851,6 +982,12 @@
         <!-- 戳戳我标签页 -->
         <div id="poke" class="tab-content">
             <h2 class="section-title">戳戳我</h2>
+            
+            <div class="search-box">
+                <input type="text" id="poke-search" placeholder="搜索戳戳我标题...">
+                <button id="poke-search-btn">搜索</button>
+                <button id="poke-clear-search" class="btn btn-secondary">清除</button>
+            </div>
             
             <div id="poke-container" class="images-container">
                 <div class="empty-state">
@@ -971,16 +1108,18 @@
             <button class="close-modal">&times;</button>
         </div>
         <form id="wildletter-record-form">
+            <input type="hidden" id="wildletter-edit-index" value="-1">
+            
             <div class="form-group">
                 <label for="wildletter-id">野信编号</label>
-                <input type="text" id="wildletter-id" class="form-control" value="自动生成" readonly>
+                <input type="text" id="wildletter-id" class="form-control" placeholder="自动生成" readonly>
             </div>
             
-            <!-- 投递日期（自动生成） -->
+            <!-- 投递日期（自动生成但可编辑） -->
             <div class="form-group">
                 <label for="wildletter-delivery-date">投递日期</label>
-                <input type="text" id="wildletter-delivery-date" class="form-control" value="" readonly>
-                <div class="form-hint">系统自动生成为当前日期 (YYYY-MM-DD格式)</div>
+                <input type="date" id="wildletter-delivery-date" class="form-control" required>
+                <div class="form-hint">默认当前日期，可修改</div>
             </div>
             
             <!-- 登记日期（非必填） -->
@@ -999,6 +1138,7 @@
                     <input type="file" id="wildletter-record-images" class="form-control" accept="image/jpeg, image/jpg, image/png" multiple style="display: none;">
                 </div>
                 <div id="wildletter-record-file-list" class="file-list"></div>
+                <div id="existing-images-preview" class="multi-image-preview"></div>
             </div>
             
             <div class="form-group">
@@ -1011,6 +1151,7 @@
                 <label for="wildletter-record-attachment">附件 (可选，支持docx、pdf格式)</label>
                 <input type="file" id="wildletter-record-attachment" class="form-control" accept=".docx, .pdf">
                 <div class="form-hint">支持格式: DOCX, PDF</div>
+                <div id="existing-attachment" style="margin-top: 10px;"></div>
             </div>
             
             <div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;">
@@ -1031,6 +1172,17 @@
         // 全局变量
         const DEFAULT_PASSWORD = "740302";
         let currentTab = "announcement";
+        let searchResults = {
+            announcement: null,
+            notice: null,
+            activity: null,
+            integralTask: null,
+            integralPlan: null,
+            integralGame: null,
+            poke: null,
+            wildletterImages: null,
+            wildletterRecords: null
+        };
         
         // 数据存储结构
         let appData = {
@@ -1175,7 +1327,7 @@
             document.getElementById('password-cancel').addEventListener('click', function() {
                 document.getElementById('password-modal').classList.remove('active');
                 document.getElementById('password-input').value = '';
-                document.getElementById('password-error').style.display = 'none';
+                    document.getElementById('password-error').style.display = 'none';
                 window.pendingAction = null;
             });
             
@@ -1232,7 +1384,7 @@
                 });
             });
             
-            // 野信计划按钮 - 现在分开在各自区域
+            // 野信计划按钮
             document.getElementById('add-wildletter-image').addEventListener('click', function() {
                 verifyPassword(function() {
                     openWildletterImageModal();
@@ -1240,9 +1392,7 @@
             });
             
             document.getElementById('add-wildletter-record').addEventListener('click', function() {
-                verifyPassword(function() {
-                    openWildletterRecordModal();
-                });
+                openWildletterRecordModal();
             });
             
             // 设置相关按钮
@@ -1353,6 +1503,9 @@
                 const counter = document.getElementById('note-counter');
                 counter.textContent = this.value.length + '/30';
             });
+            
+            // 搜索功能相关事件监听器
+            initSearchEventListeners();
             
             // 关闭模态框
             document.querySelectorAll('.close-modal').forEach(button => {
@@ -1505,12 +1658,12 @@
                     }
                 }
                 
-                // 查看野信登记详情
-                if (e.target.closest('.view-wildletter-record')) {
+                // 编辑野信登记
+                if (e.target.closest('.edit-wildletter-record')) {
                     e.preventDefault();
-                    const button = e.target.closest('.view-wildletter-record');
+                    const button = e.target.closest('.edit-wildletter-record');
                     const index = button.getAttribute('data-index');
-                    viewWildletterRecord(index);
+                    editWildletterRecord(index);
                 }
                 
                 // 删除野信登记
@@ -1534,7 +1687,245 @@
                     const img = e.target.closest('.wildletter-thumbnail');
                     viewImage(img.src);
                 }
+                
+                // 删除多图片预览中的图片
+                if (e.target.closest('.multi-image-remove')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.multi-image-remove');
+                    const index = parseInt(button.getAttribute('data-index'));
+                    const editIndex = parseInt(document.getElementById('wildletter-edit-index').value);
+                    
+                    if (editIndex !== -1 && !isNaN(index)) {
+                        const record = appData.wildletterRecords[editIndex];
+                        if (record && record.imageDataUrls && record.imageDataUrls[index]) {
+                            if (confirm('确定要删除这张图片吗？')) {
+                                record.imageDataUrls.splice(index, 1);
+                                renderExistingImagesPreview(record.imageDataUrls);
+                            }
+                        }
+                    }
+                }
             });
+        }
+        
+        // 初始化搜索事件监听器
+        function initSearchEventListeners() {
+            // 公告搜索
+            document.getElementById('announcement-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('announcement-search').value.trim();
+                searchData('announcement', query);
+            });
+            
+            document.getElementById('announcement-clear-search').addEventListener('click', function() {
+                document.getElementById('announcement-search').value = '';
+                searchResults.announcement = null;
+                renderData('announcement', 'announcement-container');
+            });
+            
+            document.getElementById('announcement-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('announcement-search-btn').click();
+                }
+            });
+            
+            // 通知搜索
+            document.getElementById('notice-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('notice-search').value.trim();
+                searchData('notice', query);
+            });
+            
+            document.getElementById('notice-clear-search').addEventListener('click', function() {
+                document.getElementById('notice-search').value = '';
+                searchResults.notice = null;
+                renderData('notice', 'notice-container');
+            });
+            
+            document.getElementById('notice-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('notice-search-btn').click();
+                }
+            });
+            
+            // 活动搜索
+            document.getElementById('activity-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('activity-search').value.trim();
+                searchData('activity', query);
+            });
+            
+            document.getElementById('activity-clear-search').addEventListener('click', function() {
+                document.getElementById('activity-search').value = '';
+                searchResults.activity = null;
+                renderData('activity', 'activity-container');
+            });
+            
+            document.getElementById('activity-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('activity-search-btn').click();
+                }
+            });
+            
+            // 积分制任务搜索
+            document.getElementById('integral-task-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('integral-task-search').value.trim();
+                searchData('integralTask', query);
+            });
+            
+            document.getElementById('integral-task-clear-search').addEventListener('click', function() {
+                document.getElementById('integral-task-search').value = '';
+                searchResults.integralTask = null;
+                renderIntegralSection('integralTask', 'integral-task-container', 'task');
+            });
+            
+            document.getElementById('integral-task-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('integral-task-search-btn').click();
+                }
+            });
+            
+            // 积分制计划搜索
+            document.getElementById('integral-plan-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('integral-plan-search').value.trim();
+                searchData('integralPlan', query);
+            });
+            
+            document.getElementById('integral-plan-clear-search').addEventListener('click', function() {
+                document.getElementById('integral-plan-search').value = '';
+                searchResults.integralPlan = null;
+                renderIntegralSection('integralPlan', 'integral-plan-container', 'plan');
+            });
+            
+            document.getElementById('integral-plan-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('integral-plan-search-btn').click();
+                }
+            });
+            
+            // 积分制游戏搜索
+            document.getElementById('integral-game-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('integral-game-search').value.trim();
+                searchData('integralGame', query);
+            });
+            
+            document.getElementById('integral-game-clear-search').addEventListener('click', function() {
+                document.getElementById('integral-game-search').value = '';
+                searchResults.integralGame = null;
+                renderIntegralSection('integralGame', 'integral-game-container', 'game');
+            });
+            
+            document.getElementById('integral-game-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('integral-game-search-btn').click();
+                }
+            });
+            
+            // 戳戳我搜索
+            document.getElementById('poke-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('poke-search').value.trim();
+                searchData('poke', query);
+            });
+            
+            document.getElementById('poke-clear-search').addEventListener('click', function() {
+                document.getElementById('poke-search').value = '';
+                searchResults.poke = null;
+                renderData('poke', 'poke-container');
+            });
+            
+            document.getElementById('poke-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('poke-search-btn').click();
+                }
+            });
+            
+            // 野信图片搜索
+            document.getElementById('wildletter-image-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('wildletter-image-search').value.trim();
+                searchData('wildletterImages', query);
+            });
+            
+            document.getElementById('wildletter-image-clear-search').addEventListener('click', function() {
+                document.getElementById('wildletter-image-search').value = '';
+                searchResults.wildletterImages = null;
+                renderWildletterImages();
+            });
+            
+            document.getElementById('wildletter-image-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('wildletter-image-search-btn').click();
+                }
+            });
+            
+            // 野信记录搜索
+            document.getElementById('wildletter-record-search-btn').addEventListener('click', function() {
+                const query = document.getElementById('wildletter-record-search').value.trim();
+                searchData('wildletterRecords', query);
+            });
+            
+            document.getElementById('wildletter-record-clear-search').addEventListener('click', function() {
+                document.getElementById('wildletter-record-search').value = '';
+                searchResults.wildletterRecords = null;
+                renderWildletterRecordsTable();
+                document.getElementById('search-results-info').innerHTML = '';
+            });
+            
+            document.getElementById('wildletter-record-search').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('wildletter-record-search-btn').click();
+                }
+            });
+        }
+        
+        // 搜索数据
+        function searchData(dataType, query) {
+            if (!query) {
+                searchResults[dataType] = null;
+                
+                if (dataType === 'wildletterImages') {
+                    renderWildletterImages();
+                } else if (dataType === 'wildletterRecords') {
+                    renderWildletterRecordsTable();
+                    document.getElementById('search-results-info').innerHTML = '';
+                } else if (dataType.includes('integral')) {
+                    const integralType = dataType.replace('integral', '').toLowerCase();
+                    renderIntegralSection(dataType, `integral-${integralType}-container`, integralType);
+                } else {
+                    renderData(dataType, `${dataType}-container`);
+                }
+                return;
+            }
+            
+            const dataArray = appData[dataType];
+            if (!dataArray) return;
+            
+            const results = dataArray.filter(item => {
+                // 根据数据类型决定搜索字段
+                if (dataType === 'wildletterRecords') {
+                    // 搜索野信编号、备注
+                    return (item.id && item.id.toLowerCase().includes(query.toLowerCase())) ||
+                           (item.note && item.note.toLowerCase().includes(query.toLowerCase()));
+                } else if (dataType === 'wildletterImages') {
+                    // 搜索上传日期
+                    return item.date && item.date.includes(query);
+                } else {
+                    // 搜索标题
+                    return item.title && item.title.toLowerCase().includes(query.toLowerCase());
+                }
+            });
+            
+            searchResults[dataType] = results;
+            
+            if (dataType === 'wildletterImages') {
+                renderWildletterImages(results);
+            } else if (dataType === 'wildletterRecords') {
+                renderWildletterRecordsTable(results);
+                document.getElementById('search-results-info').innerHTML = `
+                    找到 ${results.length} 条记录 (搜索词: ${escapeHtml(query)})
+                `;
+            } else if (dataType.includes('integral')) {
+                const integralType = dataType.replace('integral', '').toLowerCase();
+                renderIntegralSection(dataType, `integral-${integralType}-container`, integralType, results);
+            } else {
+                renderData(dataType, `${dataType}-container`, results);
+            }
         }
         
         // 密码验证函数
@@ -1575,27 +1966,79 @@
         }
         
         // 打开野信登记模态框
-function openWildletterRecordModal() {
-    // 生成野信编号
-    const currentDate = new Date();
-    const year = currentDate.getFullYear().toString().slice(-2);
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
-    const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    const wildletterId = `WL${year}${month}${day}${randomNum}`;
-    
-    // 设置投递日期为当前日期（格式：YYYY-MM-DD）
-    const deliveryDate = `${currentDate.getFullYear()}-${month}-${day}`;
-    
-    document.getElementById('wildletter-id').value = wildletterId;
-    document.getElementById('wildletter-delivery-date').value = deliveryDate;
-    
-    // 清空登记日期，让用户自己填写或留空
-    document.getElementById('wildletter-register-date').value = '';
-    
-    document.getElementById('wildletter-record-modal').classList.add('active');
-    resetWildletterRecordForm();
-}
+        function openWildletterRecordModal(editIndex = -1) {
+            // 生成野信编号（如果是新增）
+            if (editIndex === -1) {
+                const currentDate = new Date();
+                const year = currentDate.getFullYear().toString().slice(-2);
+                const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                const day = currentDate.getDate().toString().padStart(2, '0');
+                const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                const wildletterId = `WL${year}${month}${day}${randomNum}`;
+                document.getElementById('wildletter-id').value = wildletterId;
+            }
+            
+            // 设置编辑索引
+            document.getElementById('wildletter-edit-index').value = editIndex;
+            
+            // 重置表单
+            resetWildletterRecordForm();
+            
+            // 如果是编辑模式，填充数据
+            if (editIndex !== -1) {
+                const record = appData.wildletterRecords[editIndex];
+                if (record) {
+                    document.getElementById('modal-title').textContent = '编辑野信登记';
+                    document.getElementById('wildletter-id').value = record.id;
+                    document.getElementById('wildletter-delivery-date').value = record.deliveryDate;
+                    document.getElementById('wildletter-register-date').value = record.registerDate || '';
+                    document.getElementById('wildletter-note').value = record.note || '';
+                    document.getElementById('note-counter').textContent = (record.note ? record.note.length : 0) + '/30';
+                    
+                    // 显示现有图片
+                    if (record.imageDataUrls && record.imageDataUrls.length > 0) {
+                        renderExistingImagesPreview(record.imageDataUrls);
+                    }
+                    
+                    // 显示现有附件
+                    if (record.attachmentName) {
+                        document.getElementById('existing-attachment').innerHTML = `
+                            <div style="background: #f0f0f0; padding: 10px; border-radius: 5px;">
+                                现有附件: ${escapeHtml(record.attachmentName)}
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeExistingAttachment(${editIndex})" style="margin-left: 10px;">删除附件</button>
+                            </div>
+                        `;
+                    }
+                }
+            } else {
+                document.getElementById('modal-title').textContent = '野信登记';
+                // 设置默认投递日期为今天
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('wildletter-delivery-date').value = today;
+            }
+            
+            document.getElementById('wildletter-record-modal').classList.add('active');
+        }
+        
+        // 编辑野信登记
+        function editWildletterRecord(index) {
+            verifyPassword(function() {
+                openWildletterRecordModal(index);
+            });
+        }
+        
+        // 删除现有附件
+        function removeExistingAttachment(index) {
+            if (confirm('确定要删除附件吗？')) {
+                const record = appData.wildletterRecords[index];
+                if (record) {
+                    record.attachmentDataUrl = null;
+                    record.attachmentName = null;
+                    document.getElementById('existing-attachment').innerHTML = '';
+                    saveData();
+                }
+            }
+        }
         
         // 打开编辑模态框
         function openEditModal(dataType, index, integralType = '') {
@@ -1702,12 +2145,17 @@ function openWildletterRecordModal() {
         }
         
         // 重置野信登记表单
-function resetWildletterRecordForm() {
-    document.getElementById('wildletter-record-form').reset();
-    document.getElementById('wildletter-record-file-list').innerHTML = '';
-    document.getElementById('note-counter').textContent = '0/30';
-    // 注意：投递日期和编号不需要重置，因为在openWildletterRecordModal中会重新生成
-}
+        function resetWildletterRecordForm() {
+            document.getElementById('wildletter-record-form').reset();
+            document.getElementById('wildletter-record-file-list').innerHTML = '';
+            document.getElementById('existing-images-preview').innerHTML = '';
+            document.getElementById('existing-attachment').innerHTML = '';
+            document.getElementById('note-counter').textContent = '0/30';
+            
+            // 设置默认投递日期为今天
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('wildletter-delivery-date').value = today;
+        }
         
         // 更新野信图片文件列表
         function updateWildletterImageFileList() {
@@ -1757,6 +2205,26 @@ function resetWildletterRecordForm() {
                 document.getElementById('wildletter-record-images').value = '';
                 fileList.innerHTML = '';
             }
+        }
+        
+        // 渲染现有图片预览
+        function renderExistingImagesPreview(imageDataUrls) {
+            const container = document.getElementById('existing-images-preview');
+            container.innerHTML = '';
+            
+            if (!imageDataUrls || imageDataUrls.length === 0) {
+                return;
+            }
+            
+            imageDataUrls.forEach((dataUrl, index) => {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'multi-image-item';
+                imgContainer.innerHTML = `
+                    <img src="${dataUrl}" alt="图片${index + 1}">
+                    <button type="button" class="multi-image-remove" data-index="${index}" title="删除此图片">&times;</button>
+                `;
+                container.appendChild(imgContainer);
+            });
         }
         
         // 处理通用表单提交
@@ -1969,108 +2437,111 @@ function resetWildletterRecordForm() {
         }
         
         // 处理野信登记上传
-function handleWildletterRecordUpload() {
-    console.log('开始处理野信登记上传...');
-    
-    const recordId = document.getElementById('wildletter-id').value;
-    const deliveryDate = document.getElementById('wildletter-delivery-date').value;
-    const registerDateInput = document.getElementById('wildletter-register-date').value.trim();
-    const note = document.getElementById('wildletter-note').value.trim();
-    const imageFiles = document.getElementById('wildletter-record-images').files;
-    const attachmentFile = document.getElementById('wildletter-record-attachment').files[0];
-    
-    console.log('表单数据:', {
-        recordId,
-        deliveryDate,
-        registerDateInput,
-        note,
-        imageFilesCount: imageFiles.length,
-        hasAttachment: !!attachmentFile
-    });
-    
-    if (imageFiles.length === 0) {
-        alert('请至少选择一张图片！');
-        return;
-    }
-    
-    if (imageFiles.length > 2) {
-        alert('最多只能上传2张图片！');
-        return;
-    }
-    
-    // 处理登记日期
-    let registerDate = '';
-    if (registerDateInput) {
-        console.log('用户输入的登记日期:', registerDateInput);
-        const datePattern = /\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{2}/;
-        if (!datePattern.test(registerDateInput)) {
-            alert('登记日期格式不正确！请使用"YYYY年MM月DD日 HH:MM"格式，例如：2023年12月15日 14:30');
-            return;
-        }
-        registerDate = registerDateInput;
-    } else {
-        console.log('用户未输入登记日期，将留空');
-    }
-    
-    console.log('开始处理图片上传...');
-    
-    // 处理图片
-    const imagePromises = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-        console.log(`图片 ${i+1}:`, imageFiles[i].name, imageFiles[i].size, imageFiles[i].type);
-        imagePromises.push(readFileAsDataURL(imageFiles[i]));
-    }
-    
-    Promise.all(imagePromises)
-        .then(imageDataUrls => {
-            console.log('图片上传成功，数量:', imageDataUrls.length);
+        function handleWildletterRecordUpload() {
+            const editIndex = parseInt(document.getElementById('wildletter-edit-index').value);
+            const recordId = document.getElementById('wildletter-id').value;
+            const deliveryDate = document.getElementById('wildletter-delivery-date').value;
+            const registerDateInput = document.getElementById('wildletter-register-date').value.trim();
+            const note = document.getElementById('wildletter-note').value.trim();
+            const imageFiles = document.getElementById('wildletter-record-images').files;
+            const attachmentFile = document.getElementById('wildletter-record-attachment').files[0];
             
-            // 处理附件
-            let attachmentDataUrl = null;
-            let attachmentName = null;
-            
-            if (attachmentFile) {
-                console.log('开始处理附件:', attachmentFile.name);
-                return readFileAsDataURL(attachmentFile).then(attachmentData => {
-                    attachmentDataUrl = attachmentData;
-                    attachmentName = attachmentFile.name;
-                    console.log('附件上传成功');
-                    return { imageDataUrls, attachmentDataUrl, attachmentName };
-                });
-            } else {
-                console.log('无附件');
-                return { imageDataUrls, attachmentDataUrl, attachmentName };
+            if (imageFiles.length === 0 && editIndex === -1) {
+                alert('请至少选择一张图片！');
+                return;
             }
-        })
-        .then(({ imageDataUrls, attachmentDataUrl, attachmentName }) => {
-            console.log('创建登记记录...');
             
-            const newRecord = {
-                id: recordId,
-                imageDataUrls: imageDataUrls,
-                note: note,
-                deliveryDate: deliveryDate,
-                registerDate: registerDate,
-                attachmentDataUrl: attachmentDataUrl,
-                attachmentName: attachmentName
-            };
+            if (imageFiles.length > 2) {
+                alert('最多只能上传2张图片！');
+                return;
+            }
             
-            console.log('新记录:', newRecord);
+            // 处理登记日期
+            let registerDate = '';
+            if (registerDateInput) {
+                const datePattern = /\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{2}/;
+                if (!datePattern.test(registerDateInput)) {
+                    alert('登记日期格式不正确！请使用"YYYY年MM月DD日 HH:MM"格式，例如：2023年12月15日 14:30');
+                    return;
+                }
+                registerDate = registerDateInput;
+            }
             
-            appData.wildletterRecords.push(newRecord);
-            saveData();
-            renderWildletterData();
-            document.getElementById('wildletter-record-modal').classList.remove('active');
-            alert('野信登记成功！');
+            // 处理图片
+            let imagePromises = [];
+            if (imageFiles.length > 0) {
+                for (let i = 0; i < imageFiles.length; i++) {
+                    imagePromises.push(readFileAsDataURL(imageFiles[i]));
+                }
+            } else {
+                imagePromises = Promise.resolve([]);
+            }
             
-            console.log('登记成功完成');
-        })
-        .catch(error => {
-            console.error('登记错误详情:', error);
-            console.error('错误堆栈:', error.stack);
-            alert('登记失败，请重试！错误信息：' + error.message);
-        });
-}
+            Promise.all(imagePromises)
+                .then(newImageDataUrls => {
+                    // 处理附件
+                    let attachmentDataUrl = null;
+                    let attachmentName = null;
+                    
+                    if (attachmentFile) {
+                        return readFileAsDataURL(attachmentFile).then(attachmentData => {
+                            attachmentDataUrl = attachmentData;
+                            attachmentName = attachmentFile.name;
+                            return { newImageDataUrls, attachmentDataUrl, attachmentName };
+                        });
+                    } else {
+                        return { newImageDataUrls, attachmentDataUrl, attachmentName };
+                    }
+                })
+                .then(({ newImageDataUrls, attachmentDataUrl, attachmentName }) => {
+                    // 如果是编辑模式，合并现有图片和新图片
+                    let finalImageDataUrls = newImageDataUrls;
+                    if (editIndex !== -1) {
+                        const existingRecord = appData.wildletterRecords[editIndex];
+                        if (existingRecord && existingRecord.imageDataUrls) {
+                            // 保留现有图片
+                            finalImageDataUrls = existingRecord.imageDataUrls.concat(newImageDataUrls);
+                        }
+                    }
+                    
+                    if (finalImageDataUrls.length === 0) {
+                        alert('请至少上传一张图片！');
+                        return;
+                    }
+                    
+                    if (finalImageDataUrls.length > 2) {
+                        alert('总共不能超过2张图片！');
+                        return;
+                    }
+                    
+                    const newRecord = {
+                        id: recordId,
+                        imageDataUrls: finalImageDataUrls,
+                        note: note,
+                        deliveryDate: deliveryDate,
+                        registerDate: registerDate,
+                        attachmentDataUrl: attachmentDataUrl || (editIndex !== -1 && appData.wildletterRecords[editIndex] ? appData.wildletterRecords[editIndex].attachmentDataUrl : null),
+                        attachmentName: attachmentName || (editIndex !== -1 && appData.wildletterRecords[editIndex] ? appData.wildletterRecords[editIndex].attachmentName : null)
+                    };
+                    
+                    if (editIndex === -1) {
+                        // 添加新记录
+                        appData.wildletterRecords.push(newRecord);
+                    } else {
+                        // 更新现有记录
+                        appData.wildletterRecords[editIndex] = newRecord;
+                    }
+                    
+                    saveData();
+                    renderWildletterData();
+                    document.getElementById('wildletter-record-modal').classList.remove('active');
+                    alert(editIndex === -1 ? '野信登记成功！' : '修改成功！');
+                })
+                .catch(error => {
+                    console.error('登记错误:', error);
+                    alert('登记失败，请重试！');
+                });
+        }
         
         // 文件读取辅助函数
         function readFileAsDataURL(file) {
@@ -2098,11 +2569,11 @@ function handleWildletterRecordUpload() {
         }
         
         // 渲染数据到容器
-        function renderData(dataType, containerId) {
+        function renderData(dataType, containerId, dataArray = null) {
             const container = document.getElementById(containerId);
-            const dataArray = appData[dataType];
+            const targetData = dataArray || searchResults[dataType] || appData[dataType];
             
-            if (!dataArray || dataArray.length === 0) {
+            if (!targetData || targetData.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-${getIconByType(dataType)}"></i>
@@ -2113,7 +2584,15 @@ function handleWildletterRecordUpload() {
             }
             
             let html = '';
-            dataArray.forEach((item, index) => {
+            targetData.forEach((item, index) => {
+                // 获取实际索引（如果使用搜索过滤）
+                let actualIndex = index;
+                if (searchResults[dataType]) {
+                    // 在原始数据中查找对应的索引
+                    actualIndex = appData[dataType].findIndex(originalItem => originalItem.id === item.id);
+                    if (actualIndex === -1) actualIndex = index;
+                }
+                
                 // 转义HTML特殊字符，防止XSS攻击
                 const safeTitle = escapeHtml(item.title);
                 const safeDate = escapeHtml(item.date);
@@ -2125,8 +2604,8 @@ function handleWildletterRecordUpload() {
                             <div class="image-title">${safeTitle}</div>
                             <div class="image-date">${safeDate}</div>
                             <div class="image-actions">
-                                <button class="btn btn-secondary" data-type="${dataType}" data-index="${index}">修改</button>
-                                <button class="btn btn-danger" data-type="${dataType}" data-index="${index}">删除</button>
+                                <button class="btn btn-secondary" data-type="${dataType}" data-index="${actualIndex}">修改</button>
+                                <button class="btn btn-danger" data-type="${dataType}" data-index="${actualIndex}">删除</button>
                             </div>
                         </div>
                     </div>
@@ -2144,11 +2623,11 @@ function handleWildletterRecordUpload() {
         }
         
         // 渲染积分制部分
-        function renderIntegralSection(dataType, containerId, integralType) {
+        function renderIntegralSection(dataType, containerId, integralType, dataArray = null) {
             const container = document.getElementById(containerId);
-            const dataArray = appData[dataType];
+            const targetData = dataArray || searchResults[dataType] || appData[dataType];
             
-            if (!dataArray || dataArray.length === 0) {
+            if (!targetData || targetData.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-${getIconByType(dataType)}"></i>
@@ -2159,7 +2638,15 @@ function handleWildletterRecordUpload() {
             }
             
             let html = '';
-            dataArray.forEach((item, index) => {
+            targetData.forEach((item, index) => {
+                // 获取实际索引（如果使用搜索过滤）
+                let actualIndex = index;
+                if (searchResults[dataType]) {
+                    // 在原始数据中查找对应的索引
+                    actualIndex = appData[dataType].findIndex(originalItem => originalItem.id === item.id);
+                    if (actualIndex === -1) actualIndex = index;
+                }
+                
                 // 转义HTML特殊字符
                 const safeTitle = escapeHtml(item.title);
                 const safeDate = escapeHtml(item.date);
@@ -2173,8 +2660,8 @@ function handleWildletterRecordUpload() {
                             <div class="image-date">${safeDate}</div>
                             ${item.fileName ? `<div class="form-hint" style="margin: 5px 0;">附件: ${safeFileName}</div>` : ''}
                             <div class="image-actions">
-                                <button class="btn btn-secondary" data-type="integral" data-index="${index}" data-integral-type="${integralType}">修改</button>
-                                <button class="btn btn-danger" data-type="integral" data-index="${index}" data-integral-type="${integralType}">删除</button>
+                                <button class="btn btn-secondary" data-type="integral" data-index="${actualIndex}" data-integral-type="${integralType}">修改</button>
+                                <button class="btn btn-danger" data-type="integral" data-index="${actualIndex}" data-integral-type="${integralType}">删除</button>
                             </div>
                         </div>
                     </div>
@@ -2191,11 +2678,11 @@ function handleWildletterRecordUpload() {
         }
         
         // 渲染野信图片
-        function renderWildletterImages() {
+        function renderWildletterImages(dataArray = null) {
             const container = document.getElementById('wildletter-image-container');
-            const dataArray = appData.wildletterImages;
+            const targetData = dataArray || searchResults.wildletterImages || appData.wildletterImages;
             
-            if (!dataArray || dataArray.length === 0) {
+            if (!targetData || targetData.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-images"></i>
@@ -2206,7 +2693,14 @@ function handleWildletterRecordUpload() {
             }
             
             let html = '';
-            dataArray.forEach((item, index) => {
+            targetData.forEach((item, index) => {
+                // 获取实际索引
+                let actualIndex = index;
+                if (searchResults.wildletterImages) {
+                    actualIndex = appData.wildletterImages.findIndex(originalItem => originalItem.id === item.id);
+                    if (actualIndex === -1) actualIndex = index;
+                }
+                
                 html += `
                     <div class="image-item" data-id="${item.id}">
                         <img src="${item.imageDataUrl}" alt="野信图片">
@@ -2214,7 +2708,7 @@ function handleWildletterRecordUpload() {
                             <div class="image-date">${escapeHtml(item.date)}</div>
                             ${item.attachmentName ? `<div class="form-hint" style="margin: 5px 0;">附件: ${escapeHtml(item.attachmentName)}</div>` : ''}
                             <div class="image-actions">
-                                <button class="btn btn-danger delete-wildletter-image" data-index="${index}">删除</button>
+                                <button class="btn btn-danger delete-wildletter-image" data-index="${actualIndex}">删除</button>
                             </div>
                         </div>
                     </div>
@@ -2225,11 +2719,11 @@ function handleWildletterRecordUpload() {
         }
         
         // 渲染野信登记表格
-        function renderWildletterRecordsTable() {
+        function renderWildletterRecordsTable(dataArray = null) {
             const container = document.getElementById('wildletter-record-container');
-            const dataArray = appData.wildletterRecords;
+            const targetData = dataArray || searchResults.wildletterRecords || appData.wildletterRecords;
             
-            if (!dataArray || dataArray.length === 0) {
+            if (!targetData || targetData.length === 0) {
                 container.innerHTML = `
                     <tr>
                         <td colspan="7" style="text-align: center; padding: 40px;">
@@ -2244,7 +2738,14 @@ function handleWildletterRecordUpload() {
             }
             
             let html = '';
-            dataArray.forEach((item, index) => {
+            targetData.forEach((item, index) => {
+                // 获取实际索引
+                let actualIndex = index;
+                if (searchResults.wildletterRecords) {
+                    actualIndex = appData.wildletterRecords.findIndex(originalItem => originalItem.id === item.id);
+                    if (actualIndex === -1) actualIndex = index;
+                }
+                
                 const safeNote = escapeHtml(item.note);
                 const safeAttachmentName = item.attachmentName ? escapeHtml(item.attachmentName) : '';
                 const safeRegisterDate = item.registerDate ? escapeHtml(item.registerDate) : '未登记';
@@ -2269,8 +2770,8 @@ function handleWildletterRecordUpload() {
                         <td>${safeNote}</td>
                         <td>${safeAttachmentName ? safeAttachmentName : '无附件'}</td>
                         <td>
-                            <button class="btn btn-secondary view-wildletter-record" data-index="${index}" style="margin-bottom: 5px;">查看</button>
-                            <button class="btn btn-danger delete-wildletter-record" data-index="${index}">删除</button>
+                            <button class="btn btn-secondary edit-wildletter-record" data-index="${actualIndex}" style="margin-bottom: 5px;">编辑</button>
+                            <button class="btn btn-danger delete-wildletter-record" data-index="${actualIndex}">删除</button>
                         </td>
                     </tr>
                 `;
