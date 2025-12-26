@@ -964,52 +964,62 @@
     </div>
     
     <!-- 野信登记模态框 -->
-    <div id="wildletter-record-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">野信登记</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="wildletter-record-form">
-                <div class="form-group">
-                    <label for="wildletter-id">野信编号</label>
-                    <input type="text" id="wildletter-id" class="form-control" value="自动生成" readonly>
-                </div>
-                
-                <div class="form-group">
-                    <label for="wildletter-record-images">野信图片 (最多2张)</label>
-                    <div class="file-upload-area" id="wildletter-record-image-upload-area">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>点击或拖拽上传图片</p>
-                        <p class="form-hint">支持格式: JPG, JPEG, PNG</p>
-                        <input type="file" id="wildletter-record-images" class="form-control" accept="image/jpeg, image/jpg, image/png" multiple style="display: none;">
-                    </div>
-                    <div id="wildletter-record-file-list" class="file-list"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="wildletter-note">备注 (最多30个字)</label>
-                    <textarea id="wildletter-note" class="form-control" rows="3" maxlength="30" placeholder="请输入备注信息"></textarea>
-                    <div class="form-hint" id="note-counter">0/30</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="wildletter-record-attachment">附件上传 (可选)</label>
-                    <input type="file" id="wildletter-record-attachment" class="form-control" accept=".docx, .pdf">
-                    <div class="form-hint">支持格式: DOCX, PDF</div>
-                </div>
-                
-                <div class="form-group">
-                    <div class="form-hint">投递日期和登记日期将自动生成</div>
-                </div>
-                
-                <div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">提交</button>
-                    <button type="button" class="btn btn-secondary close-modal" style="flex: 1;">取消</button>
-                </div>
-            </form>
+<div id="wildletter-record-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">野信登记</h3>
+            <button class="close-modal">&times;</button>
         </div>
+        <form id="wildletter-record-form">
+            <div class="form-group">
+                <label for="wildletter-id">野信编号</label>
+                <input type="text" id="wildletter-id" class="form-control" value="自动生成" readonly>
+            </div>
+            
+            <!-- 投递日期（自动生成） -->
+            <div class="form-group">
+                <label for="wildletter-delivery-date">投递日期</label>
+                <input type="text" id="wildletter-delivery-date" class="form-control" value="" readonly>
+                <div class="form-hint">系统自动生成为当前日期 (YYYY-MM-DD格式)</div>
+            </div>
+            
+            <!-- 登记日期（非必填） -->
+            <div class="form-group">
+                <label for="wildletter-register-date">登记日期 (非必填)</label>
+                <input type="text" id="wildletter-register-date" class="form-control" placeholder="例如：2023年12月15日 14:30" maxlength="30">
+                <div class="form-hint">格式：YYYY年MM月DD日 HH:MM，留空则不记录登记日期</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="wildletter-record-images">野信图片 (最多2张，支持JPG、JPEG、PNG格式)</label>
+                <div class="file-upload-area" id="wildletter-record-image-upload-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>点击或拖拽上传图片</p>
+                    <p class="form-hint" style="margin-top: 5px;">支持格式: JPG, JPEG, PNG</p>
+                    <input type="file" id="wildletter-record-images" class="form-control" accept="image/jpeg, image/jpg, image/png" multiple style="display: none;">
+                </div>
+                <div id="wildletter-record-file-list" class="file-list"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="wildletter-note">备注 (最多30个字，非必填)</label>
+                <textarea id="wildletter-note" class="form-control" rows="3" maxlength="30" placeholder="请输入备注信息（非必填）"></textarea>
+                <div class="form-hint" id="note-counter">0/30</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="wildletter-record-attachment">附件 (可选，支持docx、pdf格式)</label>
+                <input type="file" id="wildletter-record-attachment" class="form-control" accept=".docx, .pdf">
+                <div class="form-hint">支持格式: DOCX, PDF</div>
+            </div>
+            
+            <div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">提交</button>
+                <button type="button" class="btn btn-secondary close-modal" style="flex: 1;">取消</button>
+            </div>
+        </form>
     </div>
+</div>
     
     <!-- 图片查看模态框 -->
     <div id="image-viewer" class="full-image-modal">
@@ -1565,19 +1575,27 @@
         }
         
         // 打开野信登记模态框
-        function openWildletterRecordModal() {
-            // 生成野信编号
-            const currentDate = new Date();
-            const year = currentDate.getFullYear().toString().slice(-2);
-            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-            const day = currentDate.getDate().toString().padStart(2, '0');
-            const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            const wildletterId = `WL${year}${month}${day}${randomNum}`;
-            
-            document.getElementById('wildletter-id').value = wildletterId;
-            document.getElementById('wildletter-record-modal').classList.add('active');
-            resetWildletterRecordForm();
-        }
+function openWildletterRecordModal() {
+    // 生成野信编号
+    const currentDate = new Date();
+    const year = currentDate.getFullYear().toString().slice(-2);
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const wildletterId = `WL${year}${month}${day}${randomNum}`;
+    
+    // 设置投递日期为当前日期（格式：YYYY-MM-DD）
+    const deliveryDate = `${currentDate.getFullYear()}-${month}-${day}`;
+    
+    document.getElementById('wildletter-id').value = wildletterId;
+    document.getElementById('wildletter-delivery-date').value = deliveryDate;
+    
+    // 清空登记日期，让用户自己填写或留空
+    document.getElementById('wildletter-register-date').value = '';
+    
+    document.getElementById('wildletter-record-modal').classList.add('active');
+    resetWildletterRecordForm();
+}
         
         // 打开编辑模态框
         function openEditModal(dataType, index, integralType = '') {
@@ -1684,11 +1702,12 @@
         }
         
         // 重置野信登记表单
-        function resetWildletterRecordForm() {
-            document.getElementById('wildletter-record-form').reset();
-            document.getElementById('wildletter-record-file-list').innerHTML = '';
-            document.getElementById('note-counter').textContent = '0/30';
-        }
+function resetWildletterRecordForm() {
+    document.getElementById('wildletter-record-form').reset();
+    document.getElementById('wildletter-record-file-list').innerHTML = '';
+    document.getElementById('note-counter').textContent = '0/30';
+    // 注意：投递日期和编号不需要重置，因为在openWildletterRecordModal中会重新生成
+}
         
         // 更新野信图片文件列表
         function updateWildletterImageFileList() {
@@ -1950,67 +1969,78 @@
         }
         
         // 处理野信登记上传
-        function handleWildletterRecordUpload() {
-            const recordId = document.getElementById('wildletter-id').value;
-            const note = document.getElementById('wildletter-note').value.trim();
-            const imageFiles = document.getElementById('wildletter-record-images').files;
-            const attachmentFile = document.getElementById('wildletter-record-attachment').files[0];
-            
-            if (imageFiles.length === 0) {
-                alert('请至少选择一张图片！');
-                return;
-            }
-            
-            if (imageFiles.length > 2) {
-                alert('最多只能上传2张图片！');
-                return;
-            }
-            
-            // 处理图片
-            const imagePromises = [];
-            for (let i = 0; i < imageFiles.length; i++) {
-                imagePromises.push(readFileAsDataURL(imageFiles[i]));
-            }
-            
-            Promise.all(imagePromises).then(imageDataUrls => {
-                // 处理附件
-                let attachmentDataUrl = null;
-                let attachmentName = null;
-                
-                if (attachmentFile) {
-                    return readFileAsDataURL(attachmentFile).then(attachmentData => {
-                        attachmentDataUrl = attachmentData;
-                        attachmentName = attachmentFile.name;
-                        return { imageDataUrls, attachmentDataUrl, attachmentName };
-                    });
-                } else {
-                    return { imageDataUrls, attachmentDataUrl, attachmentName };
-                }
-            }).then(({ imageDataUrls, attachmentDataUrl, attachmentName }) => {
-                const currentDate = new Date();
-                const deliveryDate = `${currentDate.getFullYear()}-${(currentDate.getMonth()+1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
-                const registerDate = `${currentDate.getFullYear()}年${currentDate.getMonth()+1}月${currentDate.getDate()}日 ${currentDate.getHours()}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
-                
-                const newRecord = {
-                    id: recordId,
-                    imageDataUrls: imageDataUrls,
-                    note: note,
-                    deliveryDate: deliveryDate,
-                    registerDate: registerDate,
-                    attachmentDataUrl: attachmentDataUrl,
-                    attachmentName: attachmentName
-                };
-                
-                appData.wildletterRecords.push(newRecord);
-                saveData();
-                renderWildletterData();
-                document.getElementById('wildletter-record-modal').classList.remove('active');
-                alert('野信登记成功！');
-            }).catch(error => {
-                console.error('登记错误:', error);
-                alert('登记失败，请重试！');
-            });
+function handleWildletterRecordUpload() {
+    const recordId = document.getElementById('wildletter-id').value;
+    const deliveryDate = document.getElementById('wildletter-delivery-date').value; // 自动生成的投递日期
+    const registerDateInput = document.getElementById('wildletter-register-date').value.trim(); // 用户输入的登记日期
+    const note = document.getElementById('wildletter-note').value.trim();
+    const imageFiles = document.getElementById('wildletter-record-images').files;
+    const attachmentFile = document.getElementById('wildletter-record-attachment').files[0];
+    
+    if (imageFiles.length === 0) {
+        alert('请至少选择一张图片！');
+        return;
+    }
+    
+    if (imageFiles.length > 2) {
+        alert('最多只能上传2张图片！');
+        return;
+    }
+    
+    // 处理登记日期：如果用户输入了，使用用户输入的；否则留空
+    let registerDate = '';
+    if (registerDateInput) {
+        // 验证用户输入的格式（简单验证）
+        const datePattern = /\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{2}/;
+        if (!datePattern.test(registerDateInput)) {
+            alert('登记日期格式不正确！请使用"YYYY年MM月DD日 HH:MM"格式，例如：2023年12月15日 14:30');
+            return;
         }
+        registerDate = registerDateInput;
+    }
+    // 如果用户没有输入登记日期，registerDate保持为空字符串
+    
+    // 处理图片
+    const imagePromises = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+        imagePromises.push(readFileAsDataURL(imageFiles[i]));
+    }
+    
+    Promise.all(imagePromises).then(imageDataUrls => {
+        // 处理附件
+        let attachmentDataUrl = null;
+        let attachmentName = null;
+        
+        if (attachmentFile) {
+            return readFileAsDataURL(attachmentFile).then(attachmentData => {
+                attachmentDataUrl = attachmentData;
+                attachmentName = attachmentFile.name;
+                return { imageDataUrls, attachmentDataUrl, attachmentName };
+            });
+        } else {
+            return { imageDataUrls, attachmentDataUrl, attachmentName };
+        }
+    }).then(({ imageDataUrls, attachmentDataUrl, attachmentName }) => {
+        const newRecord = {
+            id: recordId,
+            imageDataUrls: imageDataUrls,
+            note: note,
+            deliveryDate: deliveryDate, // 自动生成的投递日期
+            registerDate: registerDate, // 登记日期（用户输入或留空）
+            attachmentDataUrl: attachmentDataUrl,
+            attachmentName: attachmentName
+        };
+        
+        appData.wildletterRecords.push(newRecord);
+        saveData();
+        renderWildletterData();
+        document.getElementById('wildletter-record-modal').classList.remove('active');
+        alert('野信登记成功！');
+    }).catch(error => {
+        console.error('登记错误:', error);
+        alert('登记失败，请重试！');
+    });
+}
         
         // 文件读取辅助函数
         function readFileAsDataURL(file) {
@@ -2187,6 +2217,7 @@
             dataArray.forEach((item, index) => {
                 const safeNote = escapeHtml(item.note);
                 const safeAttachmentName = item.attachmentName ? escapeHtml(item.attachmentName) : '';
+                const safeRegisterDate = item.registerDate ? escapeHtml(item.registerDate) : '未登记';
                 
                 // 生成图片预览
                 let imagesHtml = '<div class="wildletter-images-preview">';
@@ -2204,7 +2235,7 @@
                         <td>${item.id}</td>
                         <td>${imagesHtml}</td>
                         <td>${item.deliveryDate}</td>
-                        <td>${escapeHtml(item.registerDate)}</td>
+                        <td>${safeRegisterDate}</td>
                         <td>${safeNote}</td>
                         <td>${safeAttachmentName ? safeAttachmentName : '无附件'}</td>
                         <td>
@@ -2216,6 +2247,24 @@
             });
             
             container.innerHTML = html;
+        }
+        
+        // 查看野信登记详情
+        function viewWildletterRecord(index) {
+            const record = appData.wildletterRecords[index];
+            if (!record) {
+                alert('记录不存在！');
+                return;
+            }
+            
+            let content = `野信编号: ${record.id}\n`;
+            content += `投递日期: ${record.deliveryDate}\n`;
+            content += `登记日期: ${record.registerDate || '未登记'}\n`;
+            if (record.note) content += `备注: ${record.note}\n`;
+            if (record.attachmentName) content += `附件: ${record.attachmentName}\n`;
+            content += `\n图片数量: ${record.imageDataUrls ? record.imageDataUrls.length : 0}`;
+            
+            alert(content);
         }
         
         // 渲染设置
@@ -2315,24 +2364,6 @@
                     alert('删除失败，项目不存在');
                 }
             });
-        }
-        
-        // 查看野信登记详情
-        function viewWildletterRecord(index) {
-            const record = appData.wildletterRecords[index];
-            if (!record) {
-                alert('记录不存在！');
-                return;
-            }
-            
-            let content = `野信编号: ${record.id}\n`;
-            content += `投递日期: ${record.deliveryDate}\n`;
-            content += `登记日期: ${record.registerDate}\n`;
-            if (record.note) content += `备注: ${record.note}\n`;
-            if (record.attachmentName) content += `附件: ${record.attachmentName}\n`;
-            content += `\n图片数量: ${record.imageDataUrls ? record.imageDataUrls.length : 0}`;
-            
-            alert(content);
         }
         
         // 删除野信图片
