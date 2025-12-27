@@ -1110,9 +1110,10 @@
         <form id="wildletter-record-form">
             <input type="hidden" id="wildletter-edit-index" value="-1">
             
-            <div class="form-group">
-                <label for="wildletter-id">野信编号</label>
-                <input type="text" id="wildletter-id" class="form-control" placeholder="自动生成" readonly>
+           <div class="form-group">
+                <label class="wildletter-id">野信编号</label>
+                <input type="text" class="wildletter-id" id="replyNumber" value="提交时自动生成" readonly>
+                <p class="number-hint">编号格式：年月日+HME+001至999（提交时自动生成）</p>
             </div>
             
             <!-- 投递日期（自动生成但可编辑） -->
